@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brimborium.Spaetzle", "Brimborium.Spaetzle\Brimborium.Spaetzle.csproj", "{A3F80936-0F93-4E2F-B8DA-A8265D8EA650}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brimborium.Spaetzle.Otel", "Brimborium.Spaetzle.Otel\Brimborium.Spaetzle.Otel.csproj", "{24B893A5-282C-4DF4-90F9-99E130B7DC7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3F80936-0F93-4E2F-B8DA-A8265D8EA650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F80936-0F93-4E2F-B8DA-A8265D8EA650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F80936-0F93-4E2F-B8DA-A8265D8EA650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F80936-0F93-4E2F-B8DA-A8265D8EA650}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24B893A5-282C-4DF4-90F9-99E130B7DC7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24B893A5-282C-4DF4-90F9-99E130B7DC7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24B893A5-282C-4DF4-90F9-99E130B7DC7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24B893A5-282C-4DF4-90F9-99E130B7DC7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
