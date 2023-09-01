@@ -1,7 +1,9 @@
+using System.Runtime.CompilerServices;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+//builder.Services.AddRazorPages();
 builder.Services.AddOpenTelemetryGrpcServices();
 builder.Services.AddOpenTelemetryHttpProtobufServices();
 
@@ -19,8 +21,23 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
-app.MapRazorPages();
+//app.MapRazorPages();
+
+app.MapFallbackToFile("{*path}", "/index.html");
+
+//app.MapFallbackToFile("{path:regex(^(?!api).$)}", "/index.html");
+
+//app.MapFallbackToPage("/{*path}", "/");
+
+//app.MapFallback("{*path:nonfile}", () => {
+//    return "OK";
+//});
+//app.MapFallback("{*path}", (HttpRequest request) =>
+//{
+//    app.re
+//    return "OK";
+//});
 
 app.Run();
