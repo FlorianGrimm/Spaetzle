@@ -5,13 +5,13 @@ public class BackgroundHttpProtobufService : BackgroundService
 {
     private readonly IHostApplicationLifetime _HostApplicationLifetime;
     private readonly ICharonService _CharonService;
-    private readonly ILogger<BackgroundGPRCService> _Logger;
+    private readonly ILogger<BackgroundHttpProtobufService> _Logger;
     private Task _TaskExecute;
 
     public BackgroundHttpProtobufService(
         IHostApplicationLifetime hostApplicationLifetime,
         ICharonService charonService,
-        ILogger<BackgroundGPRCService> logger
+        ILogger<BackgroundHttpProtobufService> logger
         )
     {
         this._TaskExecute = Task.CompletedTask;
@@ -32,7 +32,8 @@ public class BackgroundHttpProtobufService : BackgroundService
             stoppingToken,
             this._HostApplicationLifetime.ApplicationStopping);
 
-        var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://localhost:4318" });
+        // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://localhost:4318" });
+        var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://0.0.0.0:4318" });
 
         builder.Services.AddSingleton<ICharonService>(this._CharonService);
         var app = builder.Build();

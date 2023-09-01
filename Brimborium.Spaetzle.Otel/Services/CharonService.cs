@@ -68,7 +68,7 @@ public class CharonService : ICharonService
             sb.AppendLine($"L1: {utcNow:O} {resourceServiceName} {resourceLog.Resource}");
             foreach (var scopeLog in resourceLog.ScopeLogs)
             {
-                var scopeName = this.GetScopeName(scopeLog.Scope);
+                var scopeName = "";  //this.GetScopeName(scopeLog.Scope);
                 sb.AppendLine($"L2: {utcNow:O} {resourceServiceName} {scopeName} {scopeLog.Scope}");
                 foreach (var logRecord in scopeLog.LogRecords)
                 {

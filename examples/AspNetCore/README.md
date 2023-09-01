@@ -1,3 +1,6 @@
+This is copied from 
+https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/examples/AspNetCore
+
 # OpenTelemetry ASP.NET Core 7 Web API Example
 
 This example uses the new WebApplication host that ships with .NET 7

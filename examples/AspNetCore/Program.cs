@@ -15,7 +15,9 @@
 // </copyright>
 
 using System.Diagnostics.Metrics;
+
 using Examples.AspNetCore;
+
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Logs;
@@ -78,10 +80,28 @@ appBuilder.Services.AddOpenTelemetry()
                 break;
 
             case "otlp":
+                builder.AddConsoleExporter();
                 builder.AddOtlpExporter(otlpOptions =>
                 {
                     // Use IConfiguration directly for Otlp exporter endpoint option.
-                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://localhost:4317")!);
+                    otlpOptions.Protocol = OtlpExportProtocol.Grpc;
+
+                    // http://localhost:4317
+                    var url = appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: string.Empty);
+                    if (!string.IsNullOrEmpty(url)) otlpOptions.Endpoint = new Uri(url);
+                });
+                break;
+
+            case "otlphttp":
+                builder.AddConsoleExporter();
+                builder.AddOtlpExporter(otlpOptions =>
+                {
+                    // Use IConfiguration directly for Otlp exporter endpoint option.
+                    otlpOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
+
+                    // http://localhost:4318
+                    var url = appBuilder.Configuration.GetValue("OtlpHttp:Endpoint", defaultValue: string.Empty);
+                    if (!string.IsNullOrEmpty(url)) otlpOptions.Endpoint = new Uri(url);
                 });
                 break;
 
@@ -125,13 +145,33 @@ appBuilder.Services.AddOpenTelemetry()
             case "prometheus":
                 builder.AddPrometheusExporter();
                 break;
+
             case "otlp":
+                builder.AddConsoleExporter();
                 builder.AddOtlpExporter(otlpOptions =>
                 {
                     // Use IConfiguration directly for Otlp exporter endpoint option.
-                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://localhost:4317")!);
+                    otlpOptions.Protocol = OtlpExportProtocol.Grpc;
+
+                    // http://localhost:4317
+                    var url = appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: string.Empty);
+                    if (!string.IsNullOrEmpty(url)) otlpOptions.Endpoint = new Uri(url);
                 });
                 break;
+
+            case "otlphttp":
+                builder.AddConsoleExporter();
+                builder.AddOtlpExporter(otlpOptions =>
+                {
+                    // Use IConfiguration directly for Otlp exporter endpoint option.
+                    otlpOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
+
+                    // http://localhost:4318
+                    var url = appBuilder.Configuration.GetValue("OtlpHttp:Endpoint", defaultValue: string.Empty);
+                    if (!string.IsNullOrEmpty(url)) otlpOptions.Endpoint = new Uri(url);
+                });
+                break;
+
             default:
                 builder.AddConsoleExporter();
                 break;
@@ -153,18 +193,38 @@ appBuilder.Logging.AddOpenTelemetry(options =>
     switch (logExporter)
     {
         case "otlp":
+            options.AddConsoleExporter();
             options.AddOtlpExporter(otlpOptions =>
             {
                 // Use IConfiguration directly for Otlp exporter endpoint option.
-                otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://localhost:4317")!);
+                otlpOptions.Protocol = OtlpExportProtocol.Grpc;
+
+                // http://localhost:4318
+                var url = appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: string.Empty);
+                if (!string.IsNullOrEmpty(url)) otlpOptions.Endpoint = new Uri(url);
             });
             break;
+
+        case "otlphttp":
+            options.AddConsoleExporter();
+            options.AddOtlpExporter(otlpOptions =>
+            {
+                // Use IConfiguration directly for Otlp exporter endpoint option.
+                otlpOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
+
+                // http://localhost:4318
+                var url = appBuilder.Configuration.GetValue("OtlpHttp:Endpoint", defaultValue: string.Empty);
+                if (!string.IsNullOrEmpty(url)) otlpOptions.Endpoint = new Uri(url);
+            });
+            break;
+
         default:
             options.AddConsoleExporter();
             break;
     }
 });
 
+appBuilder.Services.AddRazorPages();
 appBuilder.Services.AddControllers();
 
 appBuilder.Services.AddEndpointsApiExplorer();
@@ -179,11 +239,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
+app.MapRazorPages();
 
 // Configure OpenTelemetry Prometheus AspNetCore middleware scrape endpoint if enabled.
 if (metricsExporter.Equals("prometheus", StringComparison.OrdinalIgnoreCase))

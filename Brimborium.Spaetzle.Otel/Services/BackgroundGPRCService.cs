@@ -36,7 +36,7 @@ public class BackgroundGPRCService : BackgroundService
             this._HostApplicationLifetime.ApplicationStopping);
 
         // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "https://0.0.0.0:4317" });
-        var builder = WebApplication.CreateBuilder(new string[] { "--urls", "https://0.0.0.0:4317" });
+        var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://0.0.0.0:4317" });
 
         builder.Services.AddGrpc();
         builder.Services.AddSingleton<ICharonService>(this._CharonService);
