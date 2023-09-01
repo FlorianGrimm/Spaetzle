@@ -1,23 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>$(StandardTargetFramework)</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.56.0" />
+    <PackageReference Include="Grpc.AspNetCore" />
+  </ItemGroup>
+
+  <!-- Generate protobuf serial classes -->
+  <ItemGroup Condition="'false' == 'true' ">
+    <Protobuf Include="opentelemetry\**/*.proto" Access="public"></Protobuf>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="opentelemetry\**\*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Protobuf Include="**/*.proto" Access="public">
-      <!--
-      <ProtoRoot>Implementation</ProtoRoot>
-      -->
-    </Protobuf>
+    <ProjectReference Include="..\Brimborium.Spaetzle.Contracts\Brimborium.Spaetzle.Contracts.csproj" />
   </ItemGroup>
 </Project>

@@ -1,13 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>$(StandardTargetFramework)</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Brimborium.Spaetzle.Otel\Brimborium.Spaetzle.Otel.csproj" />
+    <PackageReference Include="Grpc.AspNetCore"/>
   </ItemGroup>
 
 </Project>
