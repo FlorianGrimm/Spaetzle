@@ -36,19 +36,24 @@ public class BackgroundGPRCService : BackgroundService
             this._HostApplicationLifetime.ApplicationStopping);
 
         // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "https://0.0.0.0:4317" });
-        var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://0.0.0.0:4317" });
+        // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://0.0.0.0:4317" });
+        var builder = WebApplication.CreateBuilder();
 
         builder.Services.AddGrpc();
         builder.Services.AddSingleton<ICharonService>(this._CharonService);
         
         builder.WebHost.UseKestrel((kestrelServerOptions) => {
-        });
-        builder.Services.AddHttpLogging((httpLoggingOptions) => {
-            //httpLoggingOptions.RequestHeaders.Add()
+            kestrelServerOptions.ListenAnyIP(4317, listenOptions => {
+                listenOptions.Protocols = HttpProtocols.Http2;
+            });
         });
 
+        //builder.Services.AddHttpLogging((httpLoggingOptions) => {
+        //    //httpLoggingOptions.RequestHeaders.Add()
+        //});
+
         var app = builder.Build();        
-        app.UseHttpLogging();
+        //app.UseHttpLogging();
         app.MapGrpcService<LogsService>();
         app.MapGrpcService<MetricsService>();
         app.MapGrpcService<TraceService>();

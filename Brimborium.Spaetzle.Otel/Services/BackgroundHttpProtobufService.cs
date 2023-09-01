@@ -1,4 +1,6 @@
-﻿namespace Brimborium.Spaetzle.Otel.Services;
+﻿using Microsoft.AspNetCore.Server.Kestrel.Core;
+
+namespace Brimborium.Spaetzle.Otel.Services;
 
 //
 public class BackgroundHttpProtobufService : BackgroundService
@@ -33,9 +35,17 @@ public class BackgroundHttpProtobufService : BackgroundService
             this._HostApplicationLifetime.ApplicationStopping);
 
         // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://localhost:4318" });
-        var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://0.0.0.0:4318" });
+        // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://0.0.0.0:4318" });
+        var builder = WebApplication.CreateBuilder();
 
         builder.Services.AddSingleton<ICharonService>(this._CharonService);
+
+        builder.WebHost.UseKestrel((kestrelServerOptions) => {
+            kestrelServerOptions.ListenAnyIP(4318, listenOptions => {
+                listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3;
+            });
+        });
+
         var app = builder.Build();
 
         app.Map("/v1/logs", (HttpContext httpContext) => this.V1Logs(httpContext));
