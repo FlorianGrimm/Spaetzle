@@ -1,3 +1,5 @@
+using Brimborium.Spaetzle.Hubs;
+
 using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddRazorPages();
 builder.Services.AddOpenTelemetryGrpcServices();
 builder.Services.AddOpenTelemetryHttpProtobufServices();
+builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<IXHub, XHub>();
 
 var app = builder.Build();
 
@@ -25,6 +30,7 @@ app.UseRouting();
 
 //app.MapRazorPages();
 
+app.MapHub<SpaetzleHub>("/wsapi");
 app.MapFallbackToFile("{*path}", "/index.html");
 
 //app.MapFallbackToFile("{path:regex(^(?!api).$)}", "/index.html");

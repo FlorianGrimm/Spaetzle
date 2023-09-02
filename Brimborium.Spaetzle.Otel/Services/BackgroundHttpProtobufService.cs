@@ -99,7 +99,7 @@ public class BackgroundHttpProtobufService : BackgroundService
 
             var request = global::OpenTelemetry.Proto.Collector.Logs.V1.ExportLogsServiceRequest.Parser.ParseFrom(memoryStream);
             var utcNow = DateTimeOffset.UtcNow;
-            await this._CharonService.AddLogs(utcNow, request);
+            await this._CharonService.AddLogs(utcNow, request, httpContext.RequestAborted);
         } catch
         {
         }
@@ -117,7 +117,7 @@ public class BackgroundHttpProtobufService : BackgroundService
 
             var request = global::OpenTelemetry.Proto.Collector.Metrics.V1.ExportMetricsServiceRequest.Parser.ParseFrom(memoryStream);
             var utcNow = DateTimeOffset.UtcNow;
-            await this._CharonService.AddMetrics(utcNow, request);
+            await this._CharonService.AddMetrics(utcNow, request, httpContext.RequestAborted);
         } catch { }
         return Results.Ok();
     }
@@ -132,7 +132,7 @@ public class BackgroundHttpProtobufService : BackgroundService
 
             var request = global::OpenTelemetry.Proto.Collector.Trace.V1.ExportTraceServiceRequest.Parser.ParseFrom(memoryStream);
             var utcNow = DateTimeOffset.UtcNow;
-            await this._CharonService.AddTrace(utcNow, request);
+            await this._CharonService.AddTrace(utcNow, request, httpContext.RequestAborted);
         } catch
         {
         }

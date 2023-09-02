@@ -14,7 +14,7 @@ public class TraceService : global::OpenTelemetry.Proto.Collector.Trace.V1.Trace
     public override async Task<ExportTraceServiceResponse> Export(ExportTraceServiceRequest request, ServerCallContext context)
     {
         var utcNow = DateTimeOffset.UtcNow;
-        await this._CharonService.AddTrace(utcNow, request);
+        await this._CharonService.AddTrace(utcNow, request, context.CancellationToken);
         return new ExportTraceServiceResponse();
     }
 }

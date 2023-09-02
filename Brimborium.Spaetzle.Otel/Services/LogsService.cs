@@ -13,7 +13,7 @@ public class LogsService : global::OpenTelemetry.Proto.Collector.Logs.V1.LogsSer
     public override async Task<ExportLogsServiceResponse> Export(ExportLogsServiceRequest request, ServerCallContext context)
     {
         var utcNow = DateTimeOffset.UtcNow;
-        await this._CharonService.AddLogs(utcNow, request);
+        await this._CharonService.AddLogs(utcNow, request, context.CancellationToken);
         return new ExportLogsServiceResponse();
     }
 }

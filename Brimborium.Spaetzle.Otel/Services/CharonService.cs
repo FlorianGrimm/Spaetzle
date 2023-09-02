@@ -1,136 +1,72 @@
 ﻿using OpenTelemetry.Proto.Logs.V1;
 using OpenTelemetry.Proto.Metrics.V1;
 using OpenTelemetry.Proto.Resource.V1;
+using OpenTelemetry.Proto.Trace.V1;
 
-using static System.Formats.Asn1.AsnWriter;
+using System.Threading.Channels;
 
 namespace Brimborium.Spaetzle.Otel.Services;
 
 public interface ICharonService
 {
-    Task AddLogs(DateTimeOffset utcNow, ExportLogsServiceRequest request);
-    Task AddMetrics(DateTimeOffset utcNow, ExportMetricsServiceRequest request);
-    Task AddTrace(DateTimeOffset utcNow, ExportTraceServiceRequest request);
+    Task AddLogs(DateTimeOffset utcNow, ExportLogsServiceRequest request, CancellationToken stopToken);
+
+    Task AddMetrics(DateTimeOffset utcNow, ExportMetricsServiceRequest request, CancellationToken stopToken);
+
+    Task AddTrace(DateTimeOffset utcNow, ExportTraceServiceRequest request, CancellationToken stopToken);
+
+    Channel<ResourceLogs> ChannelResourceLogs { get; }
+
+    Channel<ResourceMetrics> ChannelResourceMetrics { get; }
+
+    Channel<ResourceSpans> ChannelResourceSpans { get; }
 }
+
 public class CharonService : ICharonService
 {
+
     public CharonService()
     {
+        this.ChannelResourceLogs = Channel.CreateBounded<global::OpenTelemetry.Proto.Logs.V1.ResourceLogs>(new BoundedChannelOptions(4000));
+        this._WriterResourceLogs = this.ChannelResourceLogs.Writer;
+
+        this.ChannelResourceMetrics = Channel.CreateBounded<global::OpenTelemetry.Proto.Metrics.V1.ResourceMetrics>(new BoundedChannelOptions(4000));
+        this._WriterResourceMetrics = this.ChannelResourceMetrics.Writer;
+
+        this.ChannelResourceSpans = Channel.CreateBounded<global::OpenTelemetry.Proto.Trace.V1.ResourceSpans>(new BoundedChannelOptions(4000));
+        this._WriterResourceSpans = this.ChannelResourceSpans.Writer;
     }
 
-    private string GetResourceServiceName(global::OpenTelemetry.Proto.Resource.V1.Resource resource)
+    public Channel<ResourceLogs> ChannelResourceLogs { get; }
+
+    private readonly ChannelWriter<ResourceLogs> _WriterResourceLogs;
+
+    public Channel<ResourceMetrics> ChannelResourceMetrics { get; }
+
+    private readonly ChannelWriter<ResourceMetrics> _WriterResourceMetrics;
+
+    public Channel<ResourceSpans> ChannelResourceSpans { get; }
+
+    private readonly ChannelWriter<ResourceSpans> _WriterResourceSpans;
+
+    public async Task AddLogs(DateTimeOffset utcNow, ExportLogsServiceRequest request, CancellationToken stopToken)
     {
-        // { "key": "service.name", "value": { "stringValue": "ExampleWebApp" } },
-        try
-        {
-            foreach (var attribute in resource.Attributes)
-            {
-                if (string.Equals("service.name", attribute.Key, StringComparison.OrdinalIgnoreCase))
-                {
-                    return attribute.Value.StringValue;
-                }
-            }
+        foreach (var resourceLog in request.ResourceLogs) { 
+            await this._WriterResourceLogs.WriteAsync(resourceLog, stopToken);
         }
-        catch
-        { 
-        }
-        return string.Empty;
     }
 
-    private string GetScopeName(global::OpenTelemetry.Proto.Common.V1.InstrumentationScope scope)
+    public async Task AddMetrics(DateTimeOffset utcNow, ExportMetricsServiceRequest request, CancellationToken stopToken)
     {
-        global::Google.Protobuf.Collections.RepeatedField<global::OpenTelemetry.Proto.Common.V1.KeyValue> attributes;
-        try
-        {
-            attributes = scope.Attributes;
+        foreach (var resourceMetric in request.ResourceMetrics) { 
+            await this._WriterResourceMetrics.WriteAsync(resourceMetric, stopToken);
         }
-        catch (System.NullReferenceException)
-        {
-            return string.Empty;
-        }
-
-        foreach (var attribute in attributes)
-        {
-            if (string.Equals("name", attribute.Key, StringComparison.OrdinalIgnoreCase))
-            {
-                return attribute.Value.StringValue;
-            }
-        }
-        return string.Empty;
     }
 
-    public Task AddLogs(DateTimeOffset utcNow, ExportLogsServiceRequest request)
+    public async Task AddTrace(DateTimeOffset utcNow, ExportTraceServiceRequest request, CancellationToken stopToken)
     {
-        var sb = new StringBuilder();
-        foreach (var resourceLog in request.ResourceLogs)
-        {
-            var resourceServiceName = this.GetResourceServiceName(resourceLog.Resource);
-            sb.AppendLine($"L1: {utcNow:O} {resourceServiceName} {resourceLog.Resource}");
-            foreach (var scopeLog in resourceLog.ScopeLogs)
-            {
-                var scopeName = "";  //this.GetScopeName(scopeLog.Scope);
-                sb.AppendLine($"L2: {utcNow:O} {resourceServiceName} {scopeName} {scopeLog.Scope}");
-                foreach (var logRecord in scopeLog.LogRecords)
-                {
-                    // logRecord.SeverityNumber
-                    // logRecord.Body
-                    // logRecord.SpanId
-                    // logRecord.TimeUnixNano
-                    //foreach (var attribute in logRecord.Attributes) {
-                    //    attribute.Key
-                    //    attribute.Value
-                    //}
-                    sb.AppendLine($"L3: {utcNow:O} {resourceServiceName} {scopeName} {logRecord}");
-                }
-            }
+        foreach (var resourceSpan in request.ResourceSpans) {
+            await this._WriterResourceSpans.WriteAsync(resourceSpan, stopToken);
         }
-        sb.AppendLine();
-        System.Console.Out.WriteLine(sb.ToString());
-        return Task.CompletedTask;
-    }
-
-    public Task AddMetrics(DateTimeOffset utcNow, ExportMetricsServiceRequest request)
-    {
-        var sb = new StringBuilder();
-        foreach (var resourceMetric in request.ResourceMetrics)
-        {
-            var resourceServiceName = this.GetResourceServiceName(resourceMetric.Resource);
-            sb.AppendLine($"M1: {utcNow:O} {resourceServiceName} {resourceMetric.Resource}");
-            foreach (var scopeMetric in resourceMetric.ScopeMetrics)
-            {
-                var scopeName = this.GetScopeName(scopeMetric.Scope);
-                sb.AppendLine($"M2: {utcNow:O} {resourceServiceName} {scopeName} {scopeMetric.Scope}");
-                foreach (var metric in scopeMetric.Metrics)
-                {
-                    sb.AppendLine($"M3: {utcNow:O} {resourceServiceName} {scopeName} {metric}");
-                }
-            }
-        }
-        sb.AppendLine();
-        System.Console.Out.WriteLine(sb.ToString());
-        return Task.CompletedTask;
-    }
-
-    public Task AddTrace(DateTimeOffset utcNow, ExportTraceServiceRequest request)
-    {
-        var sb = new StringBuilder();
-        foreach (var resourceSpan in request.ResourceSpans)
-        {
-            var resourceServiceName = this.GetResourceServiceName(resourceSpan.Resource);
-            sb.AppendLine($"T1: {utcNow:O} {resourceServiceName} {resourceSpan.Resource}");
-            foreach (var scopeSpan in resourceSpan.ScopeSpans)
-            {
-                var scopeName = this.GetScopeName(scopeSpan.Scope);
-                sb.AppendLine($"T2: {utcNow:O} {resourceServiceName} {scopeName} {scopeSpan.Scope}");
-                foreach (var span in scopeSpan.Spans)
-                {
-                    sb.AppendLine($"T3: {utcNow:O} {resourceServiceName} {scopeName} {span}");
-                }
-            }
-
-        }
-        sb.AppendLine();
-        System.Console.Out.WriteLine(sb.ToString());
-        return Task.CompletedTask;
     }
 }
