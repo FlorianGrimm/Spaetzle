@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Hosting;
 
 using static System.Net.WebRequestMethods;
 
@@ -41,9 +42,11 @@ public class BackgroundGPRCService : BackgroundService
 
         builder.Services.AddGrpc();
         builder.Services.AddSingleton<ICharonService>(this._CharonService);
-        
-        builder.WebHost.UseKestrel((kestrelServerOptions) => {
-            kestrelServerOptions.ListenAnyIP(4317, listenOptions => {
+
+        builder.WebHost.UseKestrel((kestrelServerOptions) =>
+        {
+            kestrelServerOptions.ListenAnyIP(4317, listenOptions =>
+            {
                 listenOptions.Protocols = HttpProtocols.Http2;
             });
         });
@@ -52,18 +55,48 @@ public class BackgroundGPRCService : BackgroundService
         //    //httpLoggingOptions.RequestHeaders.Add()
         //});
 
-        var app = builder.Build();        
+        var app = builder.Build();
         //app.UseHttpLogging();
         app.MapGrpcService<LogsService>();
         app.MapGrpcService<MetricsService>();
         app.MapGrpcService<TraceService>();
         app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client.");
-        app.MapFallback("{*path}", (HttpRequest request) => {
+        app.MapFallback("{*path}", (HttpRequest request) =>
+        {
             this._Logger.LogError("MapFallback Path:{Path}", request.Path);
             return "OK";
         });
         //app.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, https, runner, regex, forceKill, wsl));
 
-        await app.RunAsync(ctsMerged.Token);
+        //await app.RunAsync(ctsMerged.Token);
+
+        var token = ctsMerged.Token;
+        await app.StartAsync(token).ConfigureAwait(false);
+                
+        IHostApplicationLifetime thisApplicationLifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
+        this._HostApplicationLifetime.ApplicationStopped.Register((thisApplicationLifetime) =>
+        {
+            ((IHostApplicationLifetime)thisApplicationLifetime!).StopApplication();
+        }, thisApplicationLifetime);
+
+        token.Register((thisApplicationLifetime) =>
+        {
+            ((IHostApplicationLifetime)thisApplicationLifetime!).StopApplication();
+        },
+        thisApplicationLifetime);
+
+        var waitForStop = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        thisApplicationLifetime.ApplicationStopping.Register(waitForStop =>
+        {
+            var tcs = (TaskCompletionSource<object?>)waitForStop!;
+            tcs.TrySetResult(null);
+        }, waitForStop);
+
+        await waitForStop.Task.ConfigureAwait(false);
+
+        // Host will use its default ShutdownTimeout if none is specified.
+        // The cancellation token may have been triggered to unblock waitForStop. Don't pass it here because that would trigger an abortive shutdown.
+        await app.StopAsync(CancellationToken.None).ConfigureAwait(false);
+
     }
 }

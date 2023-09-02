@@ -60,7 +60,33 @@ public class BackgroundHttpProtobufService : BackgroundService
             return "OK";
         });
 
-        await app.RunAsync(ctsMerged.Token);
+        var token = ctsMerged.Token;
+        await app.StartAsync(token).ConfigureAwait(false);
+
+        IHostApplicationLifetime thisApplicationLifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
+        this._HostApplicationLifetime.ApplicationStopped.Register((thisApplicationLifetime) =>
+        {
+            ((IHostApplicationLifetime)thisApplicationLifetime!).StopApplication();
+        }, thisApplicationLifetime);
+
+        token.Register((thisApplicationLifetime) =>
+        {
+            ((IHostApplicationLifetime)thisApplicationLifetime!).StopApplication();
+        },
+        thisApplicationLifetime);
+
+        var waitForStop = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        thisApplicationLifetime.ApplicationStopping.Register(waitForStop =>
+        {
+            var tcs = (TaskCompletionSource<object?>)waitForStop!;
+            tcs.TrySetResult(null);
+        }, waitForStop);
+
+        await waitForStop.Task.ConfigureAwait(false);
+
+        // Host will use its default ShutdownTimeout if none is specified.
+        // The cancellation token may have been triggered to unblock waitForStop. Don't pass it here because that would trigger an abortive shutdown.
+        await app.StopAsync(CancellationToken.None).ConfigureAwait(false);
     }
 
     private async Task<IResult> V1Logs(HttpContext httpContext)
