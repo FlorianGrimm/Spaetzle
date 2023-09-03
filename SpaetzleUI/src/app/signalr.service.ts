@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { MessagePackHubProtocol } from '@microsoft/signalr-protocol-msgpack';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -24,6 +25,7 @@ export class SignalrService {
     try {
       const connection = new signalR.HubConnectionBuilder()
         .withUrl(this.hubUrl)
+        .withHubProtocol(new MessagePackHubProtocol())
         .withAutomaticReconnect()
         .build();
       await connection.start(); // ({ withCredentials: false });
