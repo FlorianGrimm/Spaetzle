@@ -1,37 +1,43 @@
-﻿namespace Brimborium.Spaetzle.Otel.Services;
+﻿using OpenTelemetry.Proto.Logs.V1;
 
-public interface IXHub
-{
-    void AddLog(string body);
-}
+namespace Brimborium.Spaetzle.Otel.Services;
 
-public class TransportToHubService : BackgroundService
+public class CharonToSinkLogService : BackgroundService
 {
     private readonly ICharonService _CharonService;
-    private readonly IXHub _Hub;
+    private readonly ISpaetzleHubSink _Sink;
 
-    public TransportToHubService(
+    public CharonToSinkLogService(
         ICharonService charonService,
-        IXHub hub
+        ISpaetzleHubSink sink
         )
     {
         this._CharonService = charonService;
-        this._Hub = hub;
+        this._Sink = sink;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var readerLogs = this._CharonService.ChannelResourceLogs.Reader;
-        while (!stoppingToken.IsCancellationRequested) {
-            if (readerLogs.TryRead(out var item)) {
-                foreach(var scopeLog in item.ScopeLogs)
+        var readerLogs = this._CharonService.ChannelLogs.Reader;
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            {
+                if (readerLogs.TryRead(out var itemLog))
                 {
-                    foreach (var logRecord in scopeLog.LogRecords) {
-                        this._Hub.AddLog(logRecord.Body.StringValue);
+                    //
+                    foreach (var itemScopeLog in itemLog.ScopeLogs)
+                    {
+                        foreach (var itemLogRecord in itemScopeLog.LogRecords)
+                        {
+                            // TODO: filter / process
+                            // this._Hub.AddLog(itemLog.Resource, itemScopeLog.Scope, itemLogRecord);
+                            await this._Sink.SendDisplayMessage(itemLogRecord.ToString());
+                        }
                     }
+                    continue;
                 }
-                continue;
             }
+            
             await readerLogs.WaitToReadAsync(stoppingToken);
         }
     }

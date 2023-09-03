@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>$(StandardTargetFramework)</TargetFramework>
@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Brimborium.Spaetzle.Interact\Brimborium.Spaetzle.Interact.csproj" />
     <ProjectReference Include="..\Brimborium.Spaetzle.Otel\Brimborium.Spaetzle.Otel.csproj" />
   </ItemGroup>
+
 
 </Project>

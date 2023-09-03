@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{8B
 		examples\Directory.Packages.props = examples\Directory.Packages.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brimborium.Spaetzle.Interact", "Brimborium.Spaetzle.Interact\Brimborium.Spaetzle.Interact.csproj", "{732419B0-2C56-4117-A508-0AED2A18B228}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples.AspNetCoreWebApp", "examples\AspNetCoreWebApp\Examples.AspNetCoreWebApp.csproj", "{E5F02955-5593-4917-8475-70423D4286D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,14 @@ Global
 		{59857285-A69B-4825-B502-0BAE5B13F8F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59857285-A69B-4825-B502-0BAE5B13F8F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59857285-A69B-4825-B502-0BAE5B13F8F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{732419B0-2C56-4117-A508-0AED2A18B228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{732419B0-2C56-4117-A508-0AED2A18B228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{732419B0-2C56-4117-A508-0AED2A18B228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{732419B0-2C56-4117-A508-0AED2A18B228}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5F02955-5593-4917-8475-70423D4286D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5F02955-5593-4917-8475-70423D4286D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5F02955-5593-4917-8475-70423D4286D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5F02955-5593-4917-8475-70423D4286D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

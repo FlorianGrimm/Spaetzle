@@ -15,11 +15,11 @@ public interface ICharonService
 
     Task AddTrace(DateTimeOffset utcNow, ExportTraceServiceRequest request, CancellationToken stopToken);
 
-    Channel<ResourceLogs> ChannelResourceLogs { get; }
+    Channel<ResourceLogs> ChannelLogs { get; }
 
-    Channel<ResourceMetrics> ChannelResourceMetrics { get; }
+    Channel<ResourceMetrics> ChannelMetrics { get; }
 
-    Channel<ResourceSpans> ChannelResourceSpans { get; }
+    Channel<ResourceSpans> ChannelTraces { get; }
 }
 
 public class CharonService : ICharonService
@@ -27,27 +27,27 @@ public class CharonService : ICharonService
 
     public CharonService()
     {
-        this.ChannelResourceLogs = Channel.CreateBounded<global::OpenTelemetry.Proto.Logs.V1.ResourceLogs>(new BoundedChannelOptions(4000));
-        this._WriterResourceLogs = this.ChannelResourceLogs.Writer;
+        this.ChannelLogs = Channel.CreateBounded<global::OpenTelemetry.Proto.Logs.V1.ResourceLogs>(new BoundedChannelOptions(4000));
+        this._WriterResourceLogs = this.ChannelLogs.Writer;
 
-        this.ChannelResourceMetrics = Channel.CreateBounded<global::OpenTelemetry.Proto.Metrics.V1.ResourceMetrics>(new BoundedChannelOptions(4000));
-        this._WriterResourceMetrics = this.ChannelResourceMetrics.Writer;
+        this.ChannelMetrics = Channel.CreateBounded<global::OpenTelemetry.Proto.Metrics.V1.ResourceMetrics>(new BoundedChannelOptions(4000));
+        this._WriterResourceMetrics = this.ChannelMetrics.Writer;
 
-        this.ChannelResourceSpans = Channel.CreateBounded<global::OpenTelemetry.Proto.Trace.V1.ResourceSpans>(new BoundedChannelOptions(4000));
-        this._WriterResourceSpans = this.ChannelResourceSpans.Writer;
+        this.ChannelTraces = Channel.CreateBounded<global::OpenTelemetry.Proto.Trace.V1.ResourceSpans>(new BoundedChannelOptions(4000));
+        this._WriterTraces = this.ChannelTraces.Writer;
     }
 
-    public Channel<ResourceLogs> ChannelResourceLogs { get; }
+    public Channel<ResourceLogs> ChannelLogs { get; }
 
     private readonly ChannelWriter<ResourceLogs> _WriterResourceLogs;
 
-    public Channel<ResourceMetrics> ChannelResourceMetrics { get; }
+    public Channel<ResourceMetrics> ChannelMetrics { get; }
 
     private readonly ChannelWriter<ResourceMetrics> _WriterResourceMetrics;
 
-    public Channel<ResourceSpans> ChannelResourceSpans { get; }
+    public Channel<ResourceSpans> ChannelTraces { get; }
 
-    private readonly ChannelWriter<ResourceSpans> _WriterResourceSpans;
+    private readonly ChannelWriter<ResourceSpans> _WriterTraces;
 
     public async Task AddLogs(DateTimeOffset utcNow, ExportLogsServiceRequest request, CancellationToken stopToken)
     {
@@ -66,7 +66,7 @@ public class CharonService : ICharonService
     public async Task AddTrace(DateTimeOffset utcNow, ExportTraceServiceRequest request, CancellationToken stopToken)
     {
         foreach (var resourceSpan in request.ResourceSpans) {
-            await this._WriterResourceSpans.WriteAsync(resourceSpan, stopToken);
+            await this._WriterTraces.WriteAsync(resourceSpan, stopToken);
         }
     }
 }

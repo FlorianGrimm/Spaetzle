@@ -34,19 +34,19 @@ public class SpaetzleHub : Hub<ISpaetzleHub>
     //}
 }
 
-public class XHub : IXHub
+public class SpaetzleHubSink : ISpaetzleHubSink
 {
     private readonly IHubContext<SpaetzleHub, ISpaetzleHub> _SpaetzleHub;
 
-    public XHub(
+    public SpaetzleHubSink(
          IHubContext<SpaetzleHub, ISpaetzleHub> spaetzleHub
         )
     {
         this._SpaetzleHub = spaetzleHub;
     }
 
-    public async void AddLog(string body)
+    public async Task SendDisplayMessage(string message)
     {
-        await this._SpaetzleHub.Clients.All.DisplayMessage(body);
+        await this._SpaetzleHub.Clients.All.DisplayMessage(message);
     }
 }
