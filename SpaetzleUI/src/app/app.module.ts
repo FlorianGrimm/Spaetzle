@@ -5,10 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SignalrService } from './signalr.service';
+import { ListLogsComponent } from './list-logs/list-logs.component';
+import { ListMessageComponent } from './list-message/list-message.component';
+import { ListMetricsComponent } from './list-metrics/list-metrics.component';
+import { ListTracesComponent } from './list-traces/list-traces.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ListLogsComponent,
+    ListMessageComponent,
+    ListMetricsComponent,
+    ListTracesComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
