@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SignalrService } from './signalr.service';
+import { DisplayMessage, SignalrService } from './signalr.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -24,10 +24,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.signalrService.hubDisplayMessage.subscribe({
-      next: (message: string) => {
+    this.signalrService.hubDisplayMessage$.subscribe({
+      next: (message: DisplayMessage) => {
         console.log(`AppComponent.ngOnInit: message: ${message}`);
-        this.displayMessage = message;
+        this.displayMessage = message.msg;
       },
       error: (error: any) => {
 

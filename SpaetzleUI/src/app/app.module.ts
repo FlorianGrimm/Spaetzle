@@ -10,6 +10,7 @@ import { ListMessageComponent } from './list-message/list-message.component';
 import { ListMetricsComponent } from './list-metrics/list-metrics.component';
 import { ListTracesComponent } from './list-traces/list-traces.component';
 import { HomeComponent } from './home/home.component';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HomeComponent } from './home/home.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatListModule
   ],
   providers: [
     { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },

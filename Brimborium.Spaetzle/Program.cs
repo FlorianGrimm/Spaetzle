@@ -15,12 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddRazorPages();
 builder.Services.AddOpenTelemetryGrpcServices();
 builder.Services.AddOpenTelemetryHttpProtobufServices();
-builder.Services.AddSignalR().AddMessagePackProtocol(
-    options =>
-    {
-        options.SerializerOptions = MessagePack.MessagePackSerializerOptions.Standard
-            .WithSecurity(MessagePack.MessagePackSecurity.UntrustedData);
-    });
+builder.Services.AddSignalR();
+//builder.Services.AddSignalR().AddMessagePackProtocol(
+//    options =>
+//    {
+//        options.SerializerOptions = MessagePack.MessagePackSerializerOptions.Standard
+//            .WithSecurity(MessagePack.MessagePackSecurity.UntrustedData);
+//    });
 
 builder.Services.AddControllers();
 

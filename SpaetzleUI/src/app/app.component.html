@@ -1,32 +1,5 @@
-<style>
-  .toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    background-color: #1976d2;
-    color: white;
-    font-weight: 600;
-  }
-  .toolbar a {
-    margin-left: 20px;
-    font-size: 20px;
-    text-decoration: none;
-  }
-  .toolbar > .title {
-    color: #fff;
-  }
-  .toolbar nav a {
-    color: #ddd;
-  }
-
-
-</style>
-
 <!-- Toolbar -->
+<div class="app">
 <div class="toolbar" role="banner">
   <a [routerLink]="['/']" class="title">Spätzle</a>
   <nav>
@@ -35,8 +8,8 @@
     <a [routerLink]="['/traces']">Traces</a>
     <a [routerLink]="['/metrics']">Metrics</a>
   </nav>
-  <div class="spacer"></div>
-
 </div>
-
-<router-outlet></router-outlet>
+<div class="content" role="main">
+  <router-outlet></router-outlet>
+</div>
+</div>

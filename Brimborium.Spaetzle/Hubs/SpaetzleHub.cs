@@ -7,13 +7,13 @@ public interface ISpaetzleHubServer
     Task DisplayMessage(string message);
 }
 
-public interface ISpaetzleHubClient
+public interface ISpaetzleHub
 {
     Task DisplayMessage(string message);
 }
 public record SubscripeStreamRequest(bool? logs, bool? traces, bool? metrics);
 
-public class SpaetzleHub : Hub<ISpaetzleHubClient>, ISpaetzleHubServer
+public class SpaetzleHub : Hub<ISpaetzleHub>, ISpaetzleHubServer
 {
     public SpaetzleHub()
     {
@@ -43,10 +43,12 @@ public class SpaetzleHub : Hub<ISpaetzleHubClient>, ISpaetzleHubServer
             if (request.logs.Value)
             {
                 await this.Groups.AddToGroupAsync(this.Context.ConnectionId, "Logs");
+                await this.DisplayMessage($"add to Logs {this.Context.ConnectionId}");
             } 
             else
             {
                 await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, "Logs");
+                await this.DisplayMessage($"remove from Logs {this.Context.ConnectionId}");
             }
         }
         if (request.traces.HasValue)
@@ -85,10 +87,10 @@ public class SpaetzleHub : Hub<ISpaetzleHubClient>, ISpaetzleHubServer
 
 public class SpaetzleHubSink : ISpaetzleHubSink
 {
-    private readonly IHubContext<SpaetzleHub, ISpaetzleHubClient> _SpaetzleHub;
+    private readonly IHubContext<SpaetzleHub, ISpaetzleHub> _SpaetzleHub;
 
     public SpaetzleHubSink(
-         IHubContext<SpaetzleHub, ISpaetzleHubClient> spaetzleHub,
+         IHubContext<SpaetzleHub, ISpaetzleHub> spaetzleHub
         )
     {
         this._SpaetzleHub = spaetzleHub;

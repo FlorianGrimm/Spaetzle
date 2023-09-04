@@ -1,1 +1,6 @@
-<p>list-message works!</p>
+<mat-list>
+
+  <mat-list-item *ngFor="let displayMessage of listDisplayMessage$|async; trackBy: trackById">
+    {{displayMessage.msg}}
+  </mat-list-item>
+ </mat-list>
