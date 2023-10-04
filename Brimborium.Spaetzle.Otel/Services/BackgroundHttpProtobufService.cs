@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Configuration;
 
 namespace Brimborium.Spaetzle.Otel.Services;
 
@@ -37,6 +38,7 @@ public class BackgroundHttpProtobufService : BackgroundService
         // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://localhost:4318" });
         // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://0.0.0.0:4318" });
         var builder = WebApplication.CreateBuilder();
+        builder.Configuration.AddJsonFile("appsettings.OTEL.json", optional: true, reloadOnChange: true);
 
         builder.Services.AddSingleton<ICharonService>(this._CharonService);
 
@@ -98,8 +100,7 @@ public class BackgroundHttpProtobufService : BackgroundService
             memoryStream.Position = 0L;
 
             var request = global::OpenTelemetry.Proto.Collector.Logs.V1.ExportLogsServiceRequest.Parser.ParseFrom(memoryStream);
-            var utcNow = DateTimeOffset.UtcNow;
-            await this._CharonService.AddLogs(utcNow, request, httpContext.RequestAborted);
+            await this._CharonService.AddLogs(request, httpContext.RequestAborted);
         } catch
         {
         }
@@ -116,8 +117,7 @@ public class BackgroundHttpProtobufService : BackgroundService
             memoryStream.Position = 0L;
 
             var request = global::OpenTelemetry.Proto.Collector.Metrics.V1.ExportMetricsServiceRequest.Parser.ParseFrom(memoryStream);
-            var utcNow = DateTimeOffset.UtcNow;
-            await this._CharonService.AddMetrics(utcNow, request, httpContext.RequestAborted);
+            await this._CharonService.AddMetrics(request, httpContext.RequestAborted);
         } catch { }
         return Results.Ok();
     }
@@ -131,8 +131,7 @@ public class BackgroundHttpProtobufService : BackgroundService
             memoryStream.Position = 0L;
 
             var request = global::OpenTelemetry.Proto.Collector.Trace.V1.ExportTraceServiceRequest.Parser.ParseFrom(memoryStream);
-            var utcNow = DateTimeOffset.UtcNow;
-            await this._CharonService.AddTrace(utcNow, request, httpContext.RequestAborted);
+            await this._CharonService.AddTrace(request, httpContext.RequestAborted);
         } catch
         {
         }

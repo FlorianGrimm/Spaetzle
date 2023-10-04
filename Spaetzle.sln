@@ -24,9 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{8B
 		examples\Directory.Packages.props = examples\Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brimborium.Spaetzle.Interact", "Brimborium.Spaetzle.Interact\Brimborium.Spaetzle.Interact.csproj", "{732419B0-2C56-4117-A508-0AED2A18B228}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brimborium.Spaetzle.Interact", "Brimborium.Spaetzle.Interact\Brimborium.Spaetzle.Interact.csproj", "{732419B0-2C56-4117-A508-0AED2A18B228}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples.AspNetCoreWebApp", "examples\AspNetCoreWebApp\Examples.AspNetCoreWebApp.csproj", "{E5F02955-5593-4917-8475-70423D4286D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples.Spaetzle", "examples\Examples.Spaetzle\Examples.Spaetzle.csproj", "{53E0723F-021C-4D50-ADD8-3B6809D48CB8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brimborium.Spaetzle.BuildProto", "Brimborium.Spaetzle.BuildProto\Brimborium.Spaetzle.BuildProto.csproj", "{DE0EBEED-FE69-4715-8575-8E91A51BB897}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +62,14 @@ Global
 		{E5F02955-5593-4917-8475-70423D4286D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5F02955-5593-4917-8475-70423D4286D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5F02955-5593-4917-8475-70423D4286D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53E0723F-021C-4D50-ADD8-3B6809D48CB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53E0723F-021C-4D50-ADD8-3B6809D48CB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53E0723F-021C-4D50-ADD8-3B6809D48CB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53E0723F-021C-4D50-ADD8-3B6809D48CB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE0EBEED-FE69-4715-8575-8E91A51BB897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE0EBEED-FE69-4715-8575-8E91A51BB897}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE0EBEED-FE69-4715-8575-8E91A51BB897}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE0EBEED-FE69-4715-8575-8E91A51BB897}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

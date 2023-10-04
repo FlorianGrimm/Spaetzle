@@ -26,6 +26,7 @@ global using global::Microsoft.Extensions.DependencyInjection;
 global using global::Microsoft.Extensions.Hosting;
 global using global::Microsoft.Extensions.Logging;
 
-
+global using global::Brimborium.Spaetzle.Contracts;
 global using global::Brimborium.Spaetzle.Otel.Services;
+global using global::Brimborium.Spaetzle.Interact;
 //

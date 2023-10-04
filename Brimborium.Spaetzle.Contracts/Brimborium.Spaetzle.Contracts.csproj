@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore"/>
-    <PackageReference Include="MessagePack"/>
+    <PackageReference Include="Grpc.AspNetCore" />
+    <PackageReference Include="MessagePack" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Brimborium.Spaetzle.Contracts" />
   </ItemGroup>
 
 </Project>

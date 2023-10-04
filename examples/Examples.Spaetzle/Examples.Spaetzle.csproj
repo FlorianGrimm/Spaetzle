@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Brimborium.Spaetzle.Contracts\Brimborium.Spaetzle.Contracts.csproj" />
+    <ProjectReference Include="..\..\Brimborium.Spaetzle.Interact\Brimborium.Spaetzle.Interact.csproj" />
+    <ProjectReference Include="..\..\Brimborium.Spaetzle.Otel\Brimborium.Spaetzle.Otel.csproj" />
+    <ProjectReference Include="..\..\Brimborium.Spaetzle\Brimborium.Spaetzle.csproj" />
+  </ItemGroup>
+
+</Project>

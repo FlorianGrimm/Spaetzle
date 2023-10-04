@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
   </ItemGroup>
 
   <!-- Generate protobuf serial classes -->
@@ -19,5 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Brimborium.Spaetzle.Contracts\Brimborium.Spaetzle.Contracts.csproj" />
+    <ProjectReference Include="..\Brimborium.Spaetzle.Interact\Brimborium.Spaetzle.Interact.csproj" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore"/>
+    <PackageReference Include="Grpc.AspNetCore" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +19,17 @@
 
   <ItemGroup>
     <None Remove="opentelemetry\**\*.proto" />
-    <Protobuf Include="**/*.proto" Access="public"></Protobuf>
+    <Protobuf Include="**/*.proto" Access="public" OutputDir="Gen" GrpcOutputDir="Gen"
+              ProtoCompile="false"
+              ></Protobuf>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Gen\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Gen\*\*.cs" />
   </ItemGroup>
 
 </Project>

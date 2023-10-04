@@ -9,11 +9,11 @@ namespace Brimborium.Spaetzle.Otel.Services;
 
 public interface ICharonService
 {
-    Task AddLogs(DateTimeOffset utcNow, ExportLogsServiceRequest request, CancellationToken stopToken);
+    Task AddLogs(ExportLogsServiceRequest request, CancellationToken stopToken);
 
-    Task AddMetrics(DateTimeOffset utcNow, ExportMetricsServiceRequest request, CancellationToken stopToken);
+    Task AddMetrics(ExportMetricsServiceRequest request, CancellationToken stopToken);
 
-    Task AddTrace(DateTimeOffset utcNow, ExportTraceServiceRequest request, CancellationToken stopToken);
+    Task AddTrace(ExportTraceServiceRequest request, CancellationToken stopToken);
 
     Channel<ResourceLogs> ChannelLogs { get; }
 
@@ -49,21 +49,21 @@ public class CharonService : ICharonService
 
     private readonly ChannelWriter<ResourceSpans> _WriterTraces;
 
-    public async Task AddLogs(DateTimeOffset utcNow, ExportLogsServiceRequest request, CancellationToken stopToken)
+    public async Task AddLogs(ExportLogsServiceRequest request, CancellationToken stopToken)
     {
         foreach (var resourceLog in request.ResourceLogs) { 
             await this._WriterResourceLogs.WriteAsync(resourceLog, stopToken);
         }
     }
 
-    public async Task AddMetrics(DateTimeOffset utcNow, ExportMetricsServiceRequest request, CancellationToken stopToken)
+    public async Task AddMetrics(ExportMetricsServiceRequest request, CancellationToken stopToken)
     {
         foreach (var resourceMetric in request.ResourceMetrics) { 
             await this._WriterResourceMetrics.WriteAsync(resourceMetric, stopToken);
         }
     }
 
-    public async Task AddTrace(DateTimeOffset utcNow, ExportTraceServiceRequest request, CancellationToken stopToken)
+    public async Task AddTrace(ExportTraceServiceRequest request, CancellationToken stopToken)
     {
         foreach (var resourceSpan in request.ResourceSpans) {
             await this._WriterTraces.WriteAsync(resourceSpan, stopToken);

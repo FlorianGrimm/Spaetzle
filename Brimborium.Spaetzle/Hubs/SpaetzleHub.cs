@@ -11,7 +11,7 @@ public interface ISpaetzleHub
 {
     Task DisplayMessage(string message);
 }
-public record SubscripeStreamRequest(bool? logs, bool? traces, bool? metrics);
+public record SubscripeStreamRequest(bool? Logs, bool? Traces, bool? Metrics);
 
 public class SpaetzleHub : Hub<ISpaetzleHub>, ISpaetzleHubServer
 {
@@ -38,9 +38,9 @@ public class SpaetzleHub : Hub<ISpaetzleHub>, ISpaetzleHubServer
 
     public async Task SubscripeStream(SubscripeStreamRequest request)
     {
-        if (request.logs.HasValue)
+        if (request.Logs.HasValue)
         {
-            if (request.logs.Value)
+            if (request.Logs.Value)
             {
                 await this.Groups.AddToGroupAsync(this.Context.ConnectionId, "Logs");
                 await this.DisplayMessage($"add to Logs {this.Context.ConnectionId}");
@@ -51,9 +51,9 @@ public class SpaetzleHub : Hub<ISpaetzleHub>, ISpaetzleHubServer
                 await this.DisplayMessage($"remove from Logs {this.Context.ConnectionId}");
             }
         }
-        if (request.traces.HasValue)
+        if (request.Traces.HasValue)
         {
-            if (request.traces.Value)
+            if (request.Traces.Value)
             {
                 await this.Groups.AddToGroupAsync(this.Context.ConnectionId, "Traces");
             } else
@@ -61,9 +61,9 @@ public class SpaetzleHub : Hub<ISpaetzleHub>, ISpaetzleHubServer
                 await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, "Traces");
             }
         }
-        if (request.metrics.HasValue)
+        if (request.Metrics.HasValue)
         {
-            if (request.metrics.Value)
+            if (request.Metrics.Value)
             {
                 await this.Groups.AddToGroupAsync(this.Context.ConnectionId, "Metrics");
             } else

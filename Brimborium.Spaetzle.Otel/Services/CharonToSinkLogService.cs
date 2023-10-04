@@ -1,18 +1,19 @@
-﻿using OpenTelemetry.Proto.Logs.V1;
-
-namespace Brimborium.Spaetzle.Otel.Services;
+﻿namespace Brimborium.Spaetzle.Otel.Services;
 
 public class CharonToSinkLogService : BackgroundService
 {
     private readonly ICharonService _CharonService;
+    private readonly IRuleEngine _RuleEngine;
     private readonly ISpaetzleHubSink _Sink;
 
     public CharonToSinkLogService(
         ICharonService charonService,
+        IRuleEngine ruleEngine,
         ISpaetzleHubSink sink
         )
     {
         this._CharonService = charonService;
+        this._RuleEngine = ruleEngine;
         this._Sink = sink;
     }
 
@@ -24,16 +25,15 @@ public class CharonToSinkLogService : BackgroundService
             {
                 if (readerLogs.TryRead(out var itemLog))
                 {
-                    //
                     foreach (var itemScopeLog in itemLog.ScopeLogs)
                     {
                         foreach (var itemLogRecord in itemScopeLog.LogRecords)
                         {
-                            // TODO: filter / process
-                            // this._Hub.AddLog(itemLog.Resource, itemScopeLog.Scope, itemLogRecord);
-                            await this._Sink.SendDisplayMessage(itemLogRecord.ToString());
+                            this._RuleEngine.EnrichLog(new OneLogRecord(itemLog.Resource, itemLogRecord));
                         }
                     }
+                    // TODO this._Sink.SendLog(itemLog);
+                    await this._Sink.SendDisplayMessage(itemLog.ToString());
                     continue;
                 }
             }

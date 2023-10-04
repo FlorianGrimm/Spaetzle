@@ -3,14 +3,17 @@
 public class CharonToSinkMetricService : BackgroundService
 {
     private readonly ICharonService _CharonService;
+    private readonly IRuleEngine _RuleEngine;
     private readonly ISpaetzleHubSink _Sink;
 
     public CharonToSinkMetricService(
         ICharonService charonService,
+        IRuleEngine ruleEngine,
         ISpaetzleHubSink sink
         )
     {
         this._CharonService = charonService;
+        this._RuleEngine = ruleEngine;
         this._Sink = sink;
     }
 
@@ -29,11 +32,12 @@ public class CharonToSinkMetricService : BackgroundService
                         // itemScopeMetric.Scope
                         foreach (var itemMetricRecord in itemScopeMetric.Metrics)
                         {
-                            // TODO: filter / process
-                            //this._Sink.AddLog(itemLogRecord.Body.StringValue);
-                            await this._Sink.SendDisplayMessage(itemMetricRecord.ToString());
+                            this._RuleEngine.EnrichMetric(new OneMetric(itemMetric.Resource, itemScopeMetric.Scope, itemMetricRecord));
                         }
                     }
+                    // TODO this._Sink.SendTraceMetric(itemMetric);
+                    await this._Sink.SendDisplayMessage(itemMetric.ToString());
+                    
                     continue;
                 }
             }

@@ -11,6 +11,7 @@ import { ListMetricsComponent } from './list-metrics/list-metrics.component';
 import { ListTracesComponent } from './list-traces/list-traces.component';
 import { HomeComponent } from './home/home.component';
 import { MatListModule } from '@angular/material/list';
+import { ListRulesComponent } from './list-rules/list-rules.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { MatListModule } from '@angular/material/list';
     ListMessageComponent,
     ListMetricsComponent,
     ListTracesComponent,
-    HomeComponent
+    HomeComponent,
+    ListRulesComponent
   ],
   imports: [
     BrowserModule,

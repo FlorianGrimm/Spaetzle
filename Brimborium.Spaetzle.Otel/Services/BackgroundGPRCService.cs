@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 using static System.Net.WebRequestMethods;
@@ -39,6 +40,7 @@ public class BackgroundGPRCService : BackgroundService
         // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "https://0.0.0.0:4317" });
         // var builder = WebApplication.CreateBuilder(new string[] { "--urls", "http://0.0.0.0:4317" });
         var builder = WebApplication.CreateBuilder();
+        builder.Configuration.AddJsonFile("appsettings.OTEL.json", optional: true, reloadOnChange: true);
 
         builder.Services.AddGrpc();
         builder.Services.AddSingleton<ICharonService>(this._CharonService);

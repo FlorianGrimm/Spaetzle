@@ -12,8 +12,7 @@ public class MetricsService : global::OpenTelemetry.Proto.Collector.Metrics.V1.M
 
     public override async Task<ExportMetricsServiceResponse> Export(ExportMetricsServiceRequest request, ServerCallContext context)
     {        
-        var utcNow = DateTimeOffset.UtcNow;
-        await this._CharonService.AddMetrics(utcNow, request, context.CancellationToken);
+        await this._CharonService.AddMetrics(request, context.CancellationToken);
         return new ExportMetricsServiceResponse();
     }
 }
