@@ -69,6 +69,16 @@ export class SignalrService {
       this.hubDisplayMessage$.next(displayMessage);
       this.listDisplayMessage$.next(this.listDisplayMessage);
     });
+    // ResourceLogs
+    this.connection.on('SendLog', (message:any)=>{
+
+    });
+    this.connection.on('SendTrace', (message:any)=>{
+
+    });
+    this.connection.on('SendMetric', (message:any)=>{
+
+    });
   }
 
   displayMessage(message: string) {

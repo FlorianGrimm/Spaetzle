@@ -1,4 +1,5 @@
 ﻿using Brimborium.Spaetzle.Contracts;
+using Brimborium.Spaetzle.Interact;
 
 namespace Brimborium.Spaetzle;
 
@@ -12,6 +13,8 @@ public static class WebApplicationBuilderExtension
         //builder.Services.AddRazorPages();
         builder.Services.AddOpenTelemetryGrpcServices();
         builder.Services.AddOpenTelemetryHttpProtobufServices();
+        builder.Services.AddSingleton<IRuleEngine>((services) => RuleEngine.Create(services));
+
         builder.Services.AddSignalR();
         //builder.Services.AddSignalR().AddMessagePackProtocol(
         //    options =>

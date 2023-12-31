@@ -35,7 +35,8 @@ public class CharonToSinkMetricService : BackgroundService
                             this._RuleEngine.EnrichMetric(new OneMetric(itemMetric.Resource, itemScopeMetric.Scope, itemMetricRecord));
                         }
                     }
-                    // TODO this._Sink.SendTraceMetric(itemMetric);
+                    // TODO
+                    await this._Sink.SendMetric(itemMetric);
                     await this._Sink.SendDisplayMessage(itemMetric.ToString());
                     
                     continue;

@@ -32,7 +32,8 @@ public class CharonToSinkLogService : BackgroundService
                             this._RuleEngine.EnrichLog(new OneLogRecord(itemLog.Resource, itemLogRecord));
                         }
                     }
-                    // TODO this._Sink.SendLog(itemLog);
+                    // TODO: here
+                    await this._Sink.SendLog(itemLog);
                     await this._Sink.SendDisplayMessage(itemLog.ToString());
                     continue;
                 }

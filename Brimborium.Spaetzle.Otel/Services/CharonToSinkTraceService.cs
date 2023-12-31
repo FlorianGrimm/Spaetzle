@@ -34,7 +34,8 @@ public class CharonToSinkTraceService : BackgroundService
                             this._RuleEngine.EnrichTraces(new OneTrace(itemTrace, itemTraceScopeSpan.Scope, itemTraceSpan));
                         }
                     }
-                    // TODO this._Sink.SendTrace(itemTrace);
+                    // TODO
+                    await this._Sink.SendTrace(itemTrace);
                     await this._Sink.SendDisplayMessage(itemTrace.ToString());
                     continue;
                 }
