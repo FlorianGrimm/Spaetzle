@@ -1,35 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Grpc.Tools">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>  
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Grpc.Tools">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="opentelemetry\**\*.proto" />
-    <Protobuf Include="**/*.proto" Access="public" OutputDir="Gen" GrpcOutputDir="Gen"
-              ProtoCompile="false"
-              ></Protobuf>
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="opentelemetry/**/*.proto" />
+        <Protobuf Include="opentelemetry/**/*.proto" Access="public" ProtoCompile="true" OutputDir="Gen" GrpcOutputDir="Gen"></Protobuf>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Gen\**\*.cs" />
-  </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Gen\**\*.cs" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Gen\*\*.cs" />
-  </ItemGroup>
+    <ItemGroup>
+      <None Include="Gen\**\*.cs" />
+    </ItemGroup>
 
 </Project>
