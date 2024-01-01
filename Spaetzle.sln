@@ -32,6 +32,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples.Spaetzle", "exampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brimborium.Spaetzle.BuildProto", "Brimborium.Spaetzle.BuildProto\Brimborium.Spaetzle.BuildProto.csproj", "{DE0EBEED-FE69-4715-8575-8E91A51BB897}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brimborium.Spaetzle.OtelLocal", "Brimborium.Spaetzle.OtelLocal\Brimborium.Spaetzle.OtelLocal.csproj", "{8A727E98-C687-4134-B56A-F8AAD0F44321}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.ConsoleIncludeSpaetzle", "Examples.ConsoleIncludeSpaetzle\Examples.ConsoleIncludeSpaetzle.csproj", "{4ABF5790-D923-4CF4-BFB4-D398DCEF78F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +74,14 @@ Global
 		{DE0EBEED-FE69-4715-8575-8E91A51BB897}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE0EBEED-FE69-4715-8575-8E91A51BB897}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE0EBEED-FE69-4715-8575-8E91A51BB897}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A727E98-C687-4134-B56A-F8AAD0F44321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A727E98-C687-4134-B56A-F8AAD0F44321}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A727E98-C687-4134-B56A-F8AAD0F44321}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A727E98-C687-4134-B56A-F8AAD0F44321}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ABF5790-D923-4CF4-BFB4-D398DCEF78F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ABF5790-D923-4CF4-BFB4-D398DCEF78F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ABF5790-D923-4CF4-BFB4-D398DCEF78F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ABF5790-D923-4CF4-BFB4-D398DCEF78F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,15 +1,6 @@
-﻿using Brimborium.Spaetzle.Contracts;
+﻿namespace Brimborium.Spaetzle.Interact;
 
-using OpenTelemetry.Proto.Common.V1;
-using OpenTelemetry.Proto.Logs.V1;
-using OpenTelemetry.Proto.Metrics.V1;
-using OpenTelemetry.Proto.Resource.V1;
-using OpenTelemetry.Proto.Trace.V1;
-
-namespace Brimborium.Spaetzle.Interact;
-
-public interface IRuleEngine
-{
+public interface IRuleEngine {
     // void AddRulesCollection(IRulesCollection rulesCollection);
     // void AddRule(IRule rule);
     void EnrichLog(OneLogRecord onLogRecord);
@@ -17,14 +8,11 @@ public interface IRuleEngine
     void EnrichTraces(OneTrace oneTrace);
 }
 
-public class RuleEngine : IRuleEngine
-{
-    public static RuleEngine Create(IServiceProvider services)
-    {
+public class RuleEngine : IRuleEngine {
+    public static RuleEngine Create(IServiceProvider services) {
         var result = new RuleEngine();
         var listRulesCollection = services.GetServices<IRulesCollection>();
-        foreach (var rulesCollection in listRulesCollection)
-        {
+        foreach (var rulesCollection in listRulesCollection) {
             result.AddRulesCollection(rulesCollection);
         }
         return result;
@@ -34,20 +22,17 @@ public class RuleEngine : IRuleEngine
     private List<IRuleMetric> _ListRuleMetric = new();
     private List<IRuleTrace> _ListRuleTrace = new();
 
-    public RuleEngine()
-    {
+    public RuleEngine() {
     }
 
-    public void AddRulesCollection(IRulesCollection rulesCollection)
-    {
+    public void AddRulesCollection(IRulesCollection rulesCollection) {
         var listRule = rulesCollection.GetRules();
 
         var listRuleLogTarget = new List<IRuleLog>(this._ListRuleLog);
         var listRuleMetricTarget = new List<IRuleMetric>(this._ListRuleMetric);
         var listRuleTraceTarget = new List<IRuleTrace>(this._ListRuleTrace);
 
-        foreach (var rule in listRule)
-        {
+        foreach (var rule in listRule) {
             if (rule is IRuleLog ruleLog) { listRuleLogTarget.Add(ruleLog); }
             if (rule is IRuleMetric ruleMetric) { listRuleMetricTarget.Add(ruleMetric); }
             if (rule is IRuleTrace ruleTrace) { listRuleTraceTarget.Add(ruleTrace); }
@@ -60,8 +45,7 @@ public class RuleEngine : IRuleEngine
 
     }
 
-    public void AddRule(IRule rule)
-    {
+    public void AddRule(IRule rule) {
         var listRuleLogTarget = new List<IRuleLog>(this._ListRuleLog);
         var listRuleMetricTarget = new List<IRuleMetric>(this._ListRuleMetric);
         var listRuleTraceTarget = new List<IRuleTrace>(this._ListRuleTrace);
@@ -82,8 +66,7 @@ public class RuleEngine : IRuleEngine
         List<IRuleLog> listRuleLogTarget,
         List<IRuleMetric> listRuleMetricTarget,
         List<IRuleTrace> listRuleTraceTarget
-        )
-    {
+        ) {
         var comparerIRule = this._ComparerIRule ??= new ComparerIRule();
         //
         listRuleLogTarget.Sort(comparerIRule);
@@ -95,10 +78,8 @@ public class RuleEngine : IRuleEngine
         this._ListRuleTrace = listRuleTraceTarget;
     }
 
-    private sealed class ComparerIRule : IComparer<IRule>
-    {
-        public int Compare(IRule? x, IRule? y)
-        {
+    private sealed class ComparerIRule : IComparer<IRule> {
+        public int Compare(IRule? x, IRule? y) {
             if (ReferenceEquals(x, y)) { return 0; }
             if (ReferenceEquals(x, null)) { return 0; }
             if (ReferenceEquals(y, null)) { return 0; }
@@ -107,29 +88,23 @@ public class RuleEngine : IRuleEngine
     }
 
 
-    public void EnrichLog(OneLogRecord onLogRecord)
-    {
+    public void EnrichLog(OneLogRecord onLogRecord) {
         var listRule = this._ListRuleLog;
-        foreach (var rule in listRule)
-        {
+        foreach (var rule in listRule) {
             rule.EnrichLog(onLogRecord);
         }
     }
 
-    public void EnrichMetric(OneMetric oneMetric)
-    {
+    public void EnrichMetric(OneMetric oneMetric) {
         var listRule = this._ListRuleMetric;
-        foreach (var rule in listRule)
-        {
+        foreach (var rule in listRule) {
             rule.EnrichMetric(oneMetric);
         }
     }
 
-    public void EnrichTraces(OneTrace oneTrace)
-    {
+    public void EnrichTraces(OneTrace oneTrace) {
         var listRule = this._ListRuleTrace;
-        foreach (var rule in listRule)
-        {
+        foreach (var rule in listRule) {
             rule.EnrichTrace(oneTrace);
         }
     }

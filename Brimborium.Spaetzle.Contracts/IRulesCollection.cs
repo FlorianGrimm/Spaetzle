@@ -1,13 +1,6 @@
-﻿using OpenTelemetry.Proto.Common.V1;
-using OpenTelemetry.Proto.Logs.V1;
-using OpenTelemetry.Proto.Metrics.V1;
-using OpenTelemetry.Proto.Resource.V1;
-using OpenTelemetry.Proto.Trace.V1;
+﻿namespace Brimborium.Spaetzle.Contracts;
 
-namespace Brimborium.Spaetzle.Contracts;
-
-public interface IRulesCollection
-{
+public interface IRulesCollection {
     IEnumerable<IRule> GetRules();
 }
 
@@ -26,23 +19,19 @@ public record struct OneTrace(
     InstrumentationScope Scope,
     Span TraceSpan);
 
-public interface IRule
-{
+public interface IRule {
     public string Name { get; }
     public int Order => 0;
 
- 
+
 }
-public interface IRuleLog: IRule
-{
+public interface IRuleLog : IRule {
     void EnrichLog(OneLogRecord onLogRecord);
-    
+
 }
-public interface IRuleMetric : IRule
-{
+public interface IRuleMetric : IRule {
     void EnrichMetric(OneMetric oneMetric);
 }
-public interface IRuleTrace : IRule
-{
+public interface IRuleTrace : IRule {
     void EnrichTrace(OneTrace oneTrace);
 }

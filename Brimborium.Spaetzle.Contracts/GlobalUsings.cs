@@ -2,3 +2,8 @@
 global using global::System.Text.Json;
 global using global::System.Text.Json.Serialization;
 global using global::MessagePack;
+global using global::OpenTelemetry.Proto.Common.V1;
+global using global::OpenTelemetry.Proto.Logs.V1;
+global using global::OpenTelemetry.Proto.Metrics.V1;
+global using global::OpenTelemetry.Proto.Resource.V1;
+global using global::OpenTelemetry.Proto.Trace.V1;
