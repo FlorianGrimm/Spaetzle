@@ -11,8 +11,4 @@
     <PackageReference Include="Cocona" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Brimborium.Spaetzle.OtelLocal\Brimborium.Spaetzle.OtelLocal.csproj" />
-  </ItemGroup>
-
 </Project>
