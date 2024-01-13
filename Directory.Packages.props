@@ -6,12 +6,12 @@
   <!-- Known Used -->
   <ItemGroup>
     <PackageVersion Include="Cocona" Version="2.2.0" />
-    <PackageVersion Include="Grpc.AspNetCore" Version="2.59.0" />
+    <PackageVersion Include="Grpc.AspNetCore" Version="2.60.0" />
     <PackageVersion Include="Grpc.Tools" Version="2.60.0" />
     <PackageVersion Include="MessagePack" Version="2.5.140" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
@@ -24,8 +24,8 @@
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.7.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.7.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.7.0" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.5.1" />
-    <PackageVersion Include="OpenTelemetry" Version="1.7.1-alpha.0.30" />
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.7.0" />
+    <PackageVersion Include="OpenTelemetry" Version="1.7.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 </Project>

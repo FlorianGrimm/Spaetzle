@@ -7,8 +7,7 @@ using System.Threading.Channels;
 
 namespace Brimborium.Spaetzle.Otel.Services;
 
-public interface ICharonService
-{
+public interface ICharonService {
     Task AddLogs(ExportLogsServiceRequest request, CancellationToken stopToken);
 
     Task AddMetrics(ExportMetricsServiceRequest request, CancellationToken stopToken);
@@ -22,11 +21,9 @@ public interface ICharonService
     Channel<ResourceSpans> ChannelTraces { get; }
 }
 
-public class CharonService : ICharonService
-{
+public class CharonService : ICharonService {
 
-    public CharonService()
-    {
+    public CharonService() {
         this.ChannelLogs = Channel.CreateBounded<global::OpenTelemetry.Proto.Logs.V1.ResourceLogs>(new BoundedChannelOptions(4000));
         this._WriterResourceLogs = this.ChannelLogs.Writer;
 
@@ -49,22 +46,19 @@ public class CharonService : ICharonService
 
     private readonly ChannelWriter<ResourceSpans> _WriterTraces;
 
-    public async Task AddLogs(ExportLogsServiceRequest request, CancellationToken stopToken)
-    {
-        foreach (var resourceLog in request.ResourceLogs) { 
+    public async Task AddLogs(ExportLogsServiceRequest request, CancellationToken stopToken) {
+        foreach (var resourceLog in request.ResourceLogs) {
             await this._WriterResourceLogs.WriteAsync(resourceLog, stopToken);
         }
     }
 
-    public async Task AddMetrics(ExportMetricsServiceRequest request, CancellationToken stopToken)
-    {
-        foreach (var resourceMetric in request.ResourceMetrics) { 
+    public async Task AddMetrics(ExportMetricsServiceRequest request, CancellationToken stopToken) {
+        foreach (var resourceMetric in request.ResourceMetrics) {
             await this._WriterResourceMetrics.WriteAsync(resourceMetric, stopToken);
         }
     }
 
-    public async Task AddTrace(ExportTraceServiceRequest request, CancellationToken stopToken)
-    {
+    public async Task AddTrace(ExportTraceServiceRequest request, CancellationToken stopToken) {
         foreach (var resourceSpan in request.ResourceSpans) {
             await this._WriterTraces.WriteAsync(resourceSpan, stopToken);
         }
