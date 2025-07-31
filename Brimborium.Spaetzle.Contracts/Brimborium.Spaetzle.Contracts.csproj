@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
     <PackageReference Include="Grpc.AspNetCore" />
     <PackageReference Include="MessagePack" />
     <PackageReference Include="OpenTelemetry" />
@@ -15,8 +17,10 @@
   <ItemGroup>
     <Using Include="Brimborium.Spaetzle.Contracts" />
   </ItemGroup>
+  <!--
 	<ItemGroup>
 		<None Remove="opentelemetry/**/*.proto" />
 		<Protobuf Include="opentelemetry/**/*.proto" Access="public" ProtoCompile="true"></Protobuf>
 	</ItemGroup>
+  -->
 </Project>
